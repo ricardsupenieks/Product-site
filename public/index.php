@@ -1,6 +1,9 @@
 <?php
 
+use app\Redirect;
+use app\Session;
 use app\Template;
+use app\ViewVariables\ViewVariables;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
@@ -65,16 +68,16 @@ switch ($routeInfo[0]) {
 
         [$controller, $method] = $handler;
 //        $response = (new $controller)->{$method}($vars);
-        $response = $container->get($controller)->{$method}($vars);
+//        $response = $container->get($controller)->{$method}($vars);
 
-        if ($response instanceof Template) {
-            echo $twig->render($response->getPath(), $response->getParams());
-
-            unset($_SESSION['errors']);
-        }
-
-        if ($response instanceof Redirect) {
-            header('Location: ' . $response->getUrl());
-        }
+//        if ($response instanceof Template) {
+//            echo $twig->render($response->getPath(), $response->getParams());
+//
+//            unset($_SESSION['errors']);
+//        }
+//
+//        if ($response instanceof Redirect) {
+//            header('Location: ' . $response->getUrl());
+//        }
         break;
 }
