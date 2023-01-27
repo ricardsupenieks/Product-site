@@ -1,11 +1,12 @@
 <?php
 
-use app\Redirect;
-use app\Session;
-use app\Template;
-use app\ViewVariables\ViewErrorVariables;
-use app\ViewVariables\ViewProductVariables;
-use app\ViewVariables\ViewVariables;
+use App\Controllers\ProductController;
+use App\Redirect;
+use App\Session;
+use App\Template;
+use App\ViewVariables\ViewErrorVariables;
+use App\ViewVariables\ViewProductVariables;
+use App\ViewVariables\ViewVariables;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
@@ -31,8 +32,7 @@ foreach ($viewVariables as $variable) {
 }
 
 $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
-//    $r->addRoute('GET', '/', [StocksController::class, 'index']);
-//    $r->addRoute('GET', '/search', [StocksController::class, 'search']);
+    $r->addRoute('GET', '/', [ProductController::class, 'index']);
 });
 
 // Fetch method and URI from somewhere

@@ -1,6 +1,6 @@
 <?php
 
-namespace app;
+namespace App;
 
 class Session
 {
@@ -22,7 +22,7 @@ class Session
         return isset(self::$data->$key);
     }
 
-    public static function get(string $key): array
+    public static function get(string $key)
     {
         return self::$data->$key;
     }

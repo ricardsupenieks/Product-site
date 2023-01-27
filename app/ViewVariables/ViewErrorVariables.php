@@ -1,8 +1,8 @@
 <?php
 
-namespace app\ViewVariables;
+namespace App\ViewVariables;
 
-use app\Session;
+use App\Session;
 
 class ViewErrorVariables implements ViewVariables
 {

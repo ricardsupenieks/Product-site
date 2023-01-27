@@ -1,6 +1,7 @@
 <?php
 
-namespace app;
+namespace App;
+
 class Template
 {
     private string $path;

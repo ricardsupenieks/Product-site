@@ -1,6 +1,6 @@
 <?php
 
-namespace app\ViewVariables;
+namespace App\ViewVariables;
 
 interface ViewVariables {
 
