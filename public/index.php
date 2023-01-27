@@ -32,12 +32,6 @@ foreach ($viewVariables as $variable) {
     $twig->addGlobal($variable->getName(), $variable->getValue());
 }
 
-//$container = new DI\Container();
-//$container->set(
-//    \App\Repositories\Funds\FundsRepository::class,
-//    \DI\create(\App\Repositories\Funds\DatabaseFundsRepository::class),
-//);
-
 $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
 //    $r->addRoute('GET', '/', [StocksController::class, 'index']);
 //    $r->addRoute('GET', '/search', [StocksController::class, 'search']);
@@ -67,17 +61,16 @@ switch ($routeInfo[0]) {
         // ... call $handler with $vars
 
         [$controller, $method] = $handler;
-//        $response = (new $controller)->{$method}($vars);
-//        $response = $container->get($controller)->{$method}($vars);
+        $response = (new $controller)->{$method}($vars);
 
-//        if ($response instanceof Template) {
-//            echo $twig->render($response->getPath(), $response->getParams());
-//
-//            unset($_SESSION['errors']);
-//        }
-//
-//        if ($response instanceof Redirect) {
-//            header('Location: ' . $response->getUrl());
-//        }
+        if ($response instanceof Template) {
+            echo $twig->render($response->getPath(), $response->getParams());
+
+            unset($_SESSION['errors']);
+        }
+
+        if ($response instanceof Redirect) {
+            header('Location: ' . $response->getUrl());
+        }
         break;
 }
