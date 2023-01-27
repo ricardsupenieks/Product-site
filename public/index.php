@@ -3,6 +3,8 @@
 use app\Redirect;
 use app\Session;
 use app\Template;
+use app\ViewVariables\ViewErrorVariables;
+use app\ViewVariables\ViewProductVariables;
 use app\ViewVariables\ViewVariables;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
@@ -18,12 +20,8 @@ $loader = new FilesystemLoader('../views');
 $twig = new Environment($loader);
 
 $viewVariables = [
-//    ViewUserVariables::class,
-//    ViewErrorVariables::class,
-//    ViewStockVariables::class,
-//    ViewTransactionVariables::class,
-//    ViewProfitVariable::class,
-//    ViewUserStockVariables::class,
+    ViewErrorVariables::class,
+    ViewProductVariables::class
 ];
 
 foreach ($viewVariables as $variable) {
