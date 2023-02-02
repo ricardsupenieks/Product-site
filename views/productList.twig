@@ -3,13 +3,13 @@
 {% block content %}
     <div class="flex flex-row border-b-2 border-black justify-between mx-4 mt-10">
         <div class="text-3xl">
-            Product list
+            Product list [[ message ]]
         </div>
 
         <div class="flex flex-row gap-2 mb-2">
-            <button class="border-2 border-black px-1 shadow-md shadow-black hover:-translate-y-1 hover:scale-105 transition ease-in-out delay-90">Add</button>
+            <button class="border-2 border-black px-1 shadow-md shadow-black hover:-translate-y-1 hover:scale-105 transition ease-in-out delay-90">ADD</button>
 
-            <button class="border-2 border-black px-1 shadow-md shadow-black hover:-translate-y-1 hover:scale-105 transition ease-in-out delay-90">Mass delete</button>
+            <button class="border-2 border-black px-1 shadow-md shadow-black hover:-translate-y-1 hover:scale-105 transition ease-in-out delay-90">MASS DELETE</button>
         </div>
     </div>
 
@@ -17,7 +17,7 @@
         {% for product in products %}
             <div class="border-2 border-black px-2 flex flex-col">
                 <div class="flex justify-start mt-2">
-                    <input type="checkbox"/>
+                    <input type="checkbox" class="delete-checkbox"/>
                 </div>
 
                 <div class="flex flex-col items-center">
@@ -31,4 +31,24 @@
             </div>
         {% endfor %}
     </div>
+
+    <script type="module">
+        import { createApp } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js'
+
+        createApp({
+            data() {
+                return {
+                    message: 'fuck',
+                    products: '',
+                }
+            },
+            methods: {
+                fetchAllData:function(){
+                    axios.post('')
+                }
+            },
+            delimiters: ['[[', ']]']
+        }).mount('#app')
+    </script>
+
 {% endblock %}

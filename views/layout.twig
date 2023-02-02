@@ -13,8 +13,6 @@
 <body>
 <main class="min-h-[85%]">
     <div id="app">
-        [[ message ]]
-
         {% block content %}
 
         {% endblock %}
@@ -24,25 +22,6 @@
 <footer class="border-t-2 border-black mx-10 pb-10">
     <p class="text-center mt-10 font-medium">Scandiweb Test assignement</p>
 </footer>
-
-<script type="module">
-    import { createApp } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js'
-
-    createApp({
-        data() {
-            return {
-                message: 'fuck',
-                products: '',
-            }
-        },
-        methods: {
-            fetchAllData:function(){
-                axios.post('')
-            }
-        },
-        delimiters: ['[[', ']]']
-    }).mount('#app')
-</script>
 
 </body>
 </html>
