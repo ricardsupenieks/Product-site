@@ -2,18 +2,30 @@
 
 namespace App\ViewVariables;
 
-use App\Session;
+use App\Database;
 
 class ViewProductVariables implements ViewVariables
 {
 
-    public function getName()
+    public function __construct()
+    {
+        $this->connection = Database::getConnection();
+    }
+
+    public function getName(): string
     {
         return 'products';
     }
 
-    public function getValue()
+    public function getValue(): array
     {
-        return Session::get('products') ?? [];
+        $queryBuilder = $this->connection->createQueryBuilder();
+
+        $products = $queryBuilder
+            ->select('*')
+            ->from('products')
+            ->fetchAllAssociative();
+
+        return $products;
     }
 }

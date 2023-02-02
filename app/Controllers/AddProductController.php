@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Template;
 
-class ProductController
+class AddProductController
 {
     public function index()
     {

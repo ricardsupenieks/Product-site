@@ -1,5 +1,6 @@
 <?php
 
+use App\Controllers\AddProductController;
 use App\Controllers\ProductController;
 use App\Redirect;
 use App\Session;
@@ -33,7 +34,7 @@ foreach ($viewVariables as $variable) {
 
 $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
     $r->addRoute('GET', '/', [ProductController::class, 'index']);
-    // $r->addRoute('GET', '/', [AddProductController::class, 'index']);
+    $r->addRoute('GET', '/add', [AddProductController::class, 'index']);
 });
 
 // Fetch method and URI from somewhere

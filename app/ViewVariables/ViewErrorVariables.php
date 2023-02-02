@@ -4,7 +4,7 @@ namespace App\ViewVariables;
 
 use App\Session;
 
-class ViewErrorVariables implements ViewVariables
+class ViewErrorVariables implements VIewVariables
 {
     public function getName(): string
     {

@@ -1,5 +1,82 @@
 {% extends 'layout.twig' %}
 
 {% block content %}
-    HELLO IG
+    <form id="product_form">
+        <div class="flex flex-row border-b-2 border-black justify-between mx-4 mt-10">
+            <div class="text-3xl">
+                Product Add
+            </div>
+
+            <div class="flex flex-row gap-2 mb-2">
+                <button class="border-2 border-black px-1 shadow-md shadow-black hover:-translate-y-1 hover:scale-105 transition ease-in-out delay-90">
+                    Save
+                </button>
+                <button class="border-2 border-black px-1 shadow-md shadow-black hover:-translate-y-1 hover:scale-105 transition ease-in-out delay-90">
+                    Cancel
+                </button>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-20 mx-10 my-20">
+            <div class="flex flex-col gap-3 w-1/5">
+                <div class="flex flex-row justify-between">
+                    <label for="sku">SKU</label>
+                    <input type="text" name="sku" id="sku" class="border-2 border-black"/>
+                </div>
+                <div class="flex flex-row justify-between">
+                    <label for="name">Name</label>
+                    <input type="text" name="name" id="name" class="border-2 border-black mr-0"/>
+                </div>
+                <div class="flex flex-row justify-between">
+                    <label for="price">Price ($)</label>
+                    <input type="number" name="price" id="price" class="border-2 border-black mr-0"/>
+                </div>
+            </div>
+
+            <div>
+                <label for="productType">Type Switcher </label>
+                <select name="productType" id="productType" class="border-2 border-black bg-white">
+                    <option value="DVD">DVD</option>
+                    <option value="Furniture">Furniture</option>
+                    <option value="Book">Book</option>
+                </select>
+            </div>
+
+            <div class="border-2 border-black p-4 w-1/4">
+                <div class="flex flex-col gap-3 w-full">
+                    <div class="flex flex-row justify-between">
+                        <label for="DVD">Size (MB)</label>
+                        <input type="number" name="DVD" id="DVD" class="border-2 border-black mr-0"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-2 border-black p-4 w-1/4">
+                <div class="flex flex-col gap-3 w-full">
+                    <div class="flex flex-row justify-between">
+                        <label for="DVD">Height (CM)</label>
+                        <input type="number" name="DVD" id="DVD" class="border-2 border-black mr-0"/>
+                    </div>
+                    <div class="flex flex-row justify-between">
+                        <label for="DVD">Width (CM)</label>
+                        <input type="number" name="DVD" id="DVD" class="border-2 border-black mr-0"/>
+                    </div>
+                    <div class="flex flex-row justify-between">
+                        <label for="DVD">Length (CM)</label>
+                        <input type="number" name="DVD" id="DVD" class="border-2 border-black mr-0"/>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="border-2 border-black p-4 w-1/4">
+                <div class="flex flex-col gap-3 w-full">
+                    <div class="flex flex-row justify-between">
+                        <label for="Book">Weight (KG)</label>
+                        <input type="number" name="Book" id="Book" class="border-2 border-black mr-0"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
 {% endblock %}
