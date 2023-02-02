@@ -22,8 +22,8 @@ class ProductsService
 
     }
 
-    public function deleteProduct()
+    public function deleteProduct(int $productId)
     {
-
+        $this->productRepository->delete($productId);
     }
 }

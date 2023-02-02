@@ -22,21 +22,23 @@ class DatabaseProductRepository
             ->from('products')
             ->fetchAllAssociative();
 
-        $productCollection = new ProductCollection([]);
+//        $productCollection = new ProductCollection([]);
+//
+//        foreach($products as $product) {
+//            $product = (new Product(
+//                $product['type'],
+//                $product['sku'],
+//                $product['name'],
+//                $product['price'],
+//                $product['attribute']
+//            ));
+//
+//            $productCollection->add($product);
+//        }
+//
+//        return $productCollection;
 
-        foreach($products as $product) {
-            $product = (new Product(
-                $product['type'],
-                $product['sku'],
-                $product['name'],
-                $product['price'],
-                $product['attribute']
-            ));
-
-            $productCollection->add($product);
-        }
-
-        return $productCollection;
+        return $products;
     }
 
     public function store()
@@ -44,8 +46,8 @@ class DatabaseProductRepository
         // TODO: Implement store() method.
     }
 
-    public function delete()
+    public function delete(int $productId)
     {
-        // TODO: Implement store() method.
+        $this->connection->delete('products', ['id' => $productId]);
     }
 }

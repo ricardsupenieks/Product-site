@@ -1,7 +1,7 @@
 {% extends 'layout.twig' %}
 
 {% block content %}
-    <form id="product_form">
+    <form id="product_form" action="/add" method="post">
         <div class="flex flex-row border-b-2 border-black justify-between mx-4 mt-10">
             <div class="text-3xl">
                 Product Add
@@ -35,48 +35,70 @@
 
             <div>
                 <label for="productType">Type Switcher </label>
-                <select name="productType" id="productType" class="border-2 border-black bg-white">
+                <select v-model="type" name="productType" id="productType" class="border-2 border-black bg-white">
                     <option value="DVD">DVD</option>
                     <option value="Furniture">Furniture</option>
                     <option value="Book">Book</option>
                 </select>
             </div>
 
-            <div class="border-2 border-black p-4 w-1/4">
+            <div v-if="type === 'DVD'" class="border-2 border-black p-4 w-1/4">
                 <div class="flex flex-col gap-3 w-full">
+                    <p>Please, provide size:</p>
                     <div class="flex flex-row justify-between">
                         <label for="size">Size (MB)</label>
-                        <input type="number" name="size" id="size" class="border-2 border-black mr-0"/>
+                        <input type="number" name="attribute" id="size" class="border-2 border-black mr-0"/>
                     </div>
                 </div>
             </div>
 
-            <div class="border-2 border-black p-4 w-1/4">
+            <div v-if="type === 'Furniture'" class="border-2 border-black p-4 w-1/4">
                 <div class="flex flex-col gap-3 w-full">
+                    <p>Please, provide dimensions:</p>
                     <div class="flex flex-row justify-between">
                         <label for="height">Height (CM)</label>
-                        <input type="number" name="height" id="height" class="border-2 border-black mr-0"/>
+                        <input type="number" name="attribute" id="height" class="border-2 border-black mr-0"/>
                     </div>
                     <div class="flex flex-row justify-between">
                         <label for="width">Width (CM)</label>
-                        <input type="number" name="width" id="width" class="border-2 border-black mr-0"/>
+                        <input type="number" name="attribute" id="width" class="border-2 border-black mr-0"/>
                     </div>
                     <div class="flex flex-row justify-between">
                         <label for="length">Length (CM)</label>
-                        <input type="number" name="length" id="length" class="border-2 border-black mr-0"/>
+                        <input type="number" name="attribute" id="length" class="border-2 border-black mr-0"/>
                     </div>
                 </div>
             </div>
 
 
-            <div class="border-2 border-black p-4 w-1/4">
+            <div v-if="type === 'Book'" class="border-2 border-black p-4 w-1/4">
                 <div class="flex flex-col gap-3 w-full">
+                    <p>Please, provide weight:</p>
                     <div class="flex flex-row justify-between">
                         <label for="weight">Weight (KG)</label>
-                        <input type="number" name="weight" id="weight" class="border-2 border-black mr-0"/>
+                        <input type="number" name="attribute" id="weight" class="border-2 border-black mr-0"/>
                     </div>
                 </div>
             </div>
         </div>
     </form>
+
+    <script type="module">
+        import { createApp } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js';
+        createApp({
+            data() {
+                return {
+                    type: 'DVD',
+                }
+            },
+            methods: {
+                fetchAllData:function(){
+                    axios.post('')
+                }
+            },
+            delimiters: ['[[', ']]']
+        }).mount('#app');
+
+    </script>
+
 {% endblock %}
