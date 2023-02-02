@@ -33,6 +33,7 @@ foreach ($viewVariables as $variable) {
 
 $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
     $r->addRoute('GET', '/', [ProductController::class, 'index']);
+    // $r->addRoute('GET', '/', [AddProductController::class, 'index']);
 });
 
 // Fetch method and URI from somewhere

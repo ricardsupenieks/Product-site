@@ -8,6 +8,6 @@ class ProductController
 {
     public function index()
     {
-       return new Template('productList.twig');
+       return new Template('productAdd.twig');
     }
 }
