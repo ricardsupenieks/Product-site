@@ -26,6 +26,7 @@ class DatabaseProductsRepository implements ProductsRepository
 
         foreach($products as $product) {
             $product = (new Product(
+                $product['id'],
                 $product['type'],
                 $product['sku'],
                 $product['name'],

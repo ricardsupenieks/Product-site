@@ -7,9 +7,13 @@
                 Product Add
             </div>
 
-
             <div class="flex flex-row gap-2 mb-2">
-                <button class="border-2 border-black px-1 shadow-md shadow-black hover:-translate-y-1 hover:scale-105 transition ease-in-out delay-90">
+                <button :disabled="!formIsValid"
+                        :class="{
+                            'border-2 border-black px-1 shadow-md shadow-black hover:-translate-y-1 hover:scale-105 transition ease-in-out delay-90' : formIsValid,
+                            'border-2 border-black px-1 shadow-md shadow-black bg-gray-200 opacity-50' : !formIsValid,
+
+                        }">
                     Save
                 </button>
                 <a href="/" class="border-2 border-black px-1 shadow-md shadow-black hover:-translate-y-1 hover:scale-105 transition ease-in-out delay-90">
@@ -23,22 +27,22 @@
             <div class="flex flex-col gap-3 w-1/5">
                 <div class="flex flex-row justify-between">
                     <label for="sku">SKU</label>
-                    <input type="text" name="sku" id="sku" class="border-2 border-black" required oninvalid="this.setCustomValidity('Please, submit required data')" oninput="this.setCustomValidity('')"/>
+                    <input v-model="form.sku" type="text" name="sku" id="sku" class="border-2 border-black"/>
                 </div>
                 <div class="flex flex-row justify-between">
                     <label for="name">Name</label>
-                    <input type="text" name="name" id="name" class="border-2 border-black mr-0" required oninvalid="this.setCustomValidity('Please, submit required data')" oninput="this.setCustomValidity('')"/>
+                    <input v-model="form.name" type="text" name="name" id="name" class="border-2 border-black mr-0"/>
                 </div>
                 <div class="flex flex-row justify-between">
                     <label for="price">Price ($)</label>
-                    <input type="number" name="price" id="price" class="border-2 border-black mr-0" required oninvalid="this.setCustomValidity('Please, submit required data')" oninput="this.setCustomValidity('')"/>
+                    <input v-model="form.price" type="number" name="price" id="price" class="border-2 border-black mr-0"/>
                 </div>
             </div>
 
 
             <div>
                 <label for="productType">Type Switcher </label>
-                <select v-model="type" name="productType" id="productType" class="border-2 border-black bg-white" required oninvalid="this.setCustomValidity('Please, submit required data')" oninput="this.setCustomValidity('')">
+                <select v-model="form.type" name="productType" id="productType" class="border-2 border-black bg-white">
                     <option value="DVD">DVD</option>
                     <option value="Furniture">Furniture</option>
                     <option value="Book">Book</option>
@@ -46,50 +50,117 @@
             </div>
 
 
-            <div v-if="type === 'DVD'" class="border-2 border-black p-4 w-1/4">
+            <div v-if="form.type === 'DVD'" class="border-2 border-black p-4 w-1/4">
                 <div class="flex flex-col gap-3 w-full">
                     <p>Please, provide size:</p>
                     <div class="flex flex-row justify-between">
                         <label for="size">Size (MB)</label>
-                        <input type="number" name="attribute" id="size" class="border-2 border-black mr-0" required oninvalid="this.setCustomValidity('Please, submit required data')" oninput="this.setCustomValidity('')"/>
+                        <input v-model.number="form.size" type="number" name="attribute" id="size" class="border-2 border-black mr-0"/>
                     </div>
                 </div>
             </div>
 
-            <div v-if="type === 'Furniture'" class="border-2 border-black p-4 w-1/4">
+            <div v-if="form.type === 'Furniture'" class="border-2 border-black p-4 w-1/4">
                 <div class="flex flex-col gap-3 w-full">
                     <p>Please, provide dimensions:</p>
                     <div class="flex flex-row justify-between">
                         <label for="height">Height (CM)</label>
-                        <input v-model="height" type="number" id="height" class="border-2 border-black mr-0" required oninvalid="this.setCustomValidity('Please, submit required data')" oninput="this.setCustomValidity('')"/>
+                        <input v-model.number="form.height" type="number" id="height" class="border-2 border-black mr-0"/>
                     </div>
                     <div class="flex flex-row justify-between">
                         <label for="width">Width (CM)</label>
-                        <input v-model="width" type="number" id="width" class="border-2 border-black mr-0" required oninvalid="this.setCustomValidity('Please, submit required data')" oninput="this.setCustomValidity('')"/>
+                        <input v-model.number="form.width" type="number" id="width" class="border-2 border-black mr-0"/>
                     </div>
                     <div class="flex flex-row justify-between">
                         <label for="length">Length (CM)</label>
-                        <input v-model="length" type="number" id="length" class="border-2 border-black mr-0" required oninvalid="this.setCustomValidity('Please, submit required data')" oninput="this.setCustomValidity('')"/>
+                        <input v-model.number="form.length" type="number" id="length" class="border-2 border-black mr-0"/>
                     </div>
                     <input type="hidden" name="attribute" :value="dimensions = height +'x'+ width +'x'+ length">
                 </div>
             </div>
 
-            <div v-if="type === 'Book'" class="border-2 border-black p-4 w-1/4">
+            <div v-if="form.type === 'Book'" class="border-2 border-black p-4 w-1/4">
                 <div class="flex flex-col gap-3 w-full">
                     <p>Please, provide weight:</p>
                     <div class="flex flex-row justify-between">
                         <label for="weight">Weight (KG)</label>
-                        <input type="number" name="attribute" id="weight" class="border-2 border-black mr-0" required oninvalid="this.setCustomValidity('Please, submit required data')" oninput="this.setCustomValidity('')"/>
+                        <input v-model.number="form.weight" type="number" name="attribute" id="weight" class="border-2 border-black mr-0"/>
                     </div>
                 </div>
             </div>
-
-            {% if error.skuTaken %}
-                <div class="flex p-4 mb-4 text-red-800 rounded-lg bg-red-50" role="alert">
-                    <p>SKU taken</p>
-                </div>
-            {% endif %}
+            [[ form.weight ]]  [[ form.size ]]
+            <div>
+                <p v-if="!skuIsValid">Enter SKU</p>
+                <p v-if="!nameIsValid">Enter name</p>
+                <p v-if="!priceIsValid">Enter price</p>
+                {% if error.skuTaken %}
+                    <div role="alert">
+                        <p>SKU taken</p>
+                    </div>
+                {% endif %}
+            </div>
         </div>
     </form>
+
+    <script type="module">
+        import { createApp } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js';
+        createApp({
+            data() {
+                return {
+                    form: {
+                        sku: '',
+                        name: '',
+                        price: 0,
+
+                        type: 'DVD',
+
+                        height: '',
+                        width: '',
+                        length: '',
+
+                        size: '',
+                        dimensions: '0x0x0',
+                        weight: '',
+                    },
+                }
+            },
+
+            computed: {
+                skuIsValid() {
+                    return !!this.form.sku;
+                },
+                nameIsValid() {
+                    return !!this.form.name;
+                },
+                priceIsValid() {
+                    return typeof this.form.price === 'number' && this.form.price >= 0.01;
+                },
+
+                sizeIsValid() {
+                    return typeof this.form.size === 'number' && this.form.size > 0;
+                },
+
+                weightIsValid() {
+                    return typeof this.form.weight === 'number' && this.form.weight > 0;
+                },
+
+                firstFormIsValid() {
+                    return this.skuIsValid && this.nameIsValid && this.priceIsValid;
+                }
+            },
+
+            methods : {
+                submitForm() {
+                    if (this.firstFormIsValid()) {
+                        console.log('success');
+                    } else {
+                        console.log('fail');
+                    }
+                }
+            },
+            delimiters: ['[[', ']]']
+        }).mount('#app');
+
+    </script>
+
 {% endblock %}

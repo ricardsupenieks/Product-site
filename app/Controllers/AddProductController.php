@@ -29,6 +29,7 @@ class AddProductController
             return new Redirect('/add');
         }
         $product = new Product(
+            null,
             $_POST['productType'],
             $_POST['sku'],
             $_POST['name'],
