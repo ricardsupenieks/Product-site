@@ -6,7 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
     <title>Products</title>
 </head>
@@ -24,4 +23,30 @@
 </footer>
 
 </body>
+
+<script type="module">
+    import { createApp } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js';
+    createApp({
+        data() {
+            return {
+                sku: '',
+                name: '',
+                price: 0,
+
+                type: 'DVD',
+
+                height: 0,
+                width: 0,
+                length: 0,
+
+                size: 0,
+                dimensions: '0x0x0',
+                weight: 0
+            }
+        },
+        delimiters: ['[[', ']]']
+    }).mount('#app');
+
+</script>
+
 </html>

@@ -1,29 +1,28 @@
 <?php
 
 use App\Controllers\AddProductController;
-use App\Controllers\ProductController;
+use App\Controllers\ProductsController;
 use App\Redirect;
-use App\Session;
 use App\Template;
-use App\ViewVariables\ViewErrorVariables;
-use App\ViewVariables\ViewProductVariables;
+use App\ViewVariables\ErrorViewVariables;
 use App\ViewVariables\ViewVariables;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
 require '../vendor/autoload.php';
 
-Session::start();
+const PATH_TO_DOTENV = '/home/ricards/PhpstormProjects/Product_site/';
 
-$dotenv = Dotenv\Dotenv::createImmutable('/home/ricards/PhpstormProjects/Product_site/');
+session_start();
+
+$dotenv = Dotenv\Dotenv::createImmutable(PATH_TO_DOTENV);
 $dotenv->load();
 
 $loader = new FilesystemLoader('../views');
 $twig = new Environment($loader);
 
 $viewVariables = [
-    ViewErrorVariables::class,
-    ViewProductVariables::class
+    ErrorViewVariables::class,
 ];
 
 foreach ($viewVariables as $variable) {
@@ -33,8 +32,8 @@ foreach ($viewVariables as $variable) {
 }
 
 $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
-    $r->addRoute('GET', '/', [ProductController::class, 'index']);
-    $r->addRoute('POST', '/delete', [ProductController::class, 'delete']);
+    $r->addRoute('GET', '/', [ProductsController::class, 'index']);
+    $r->addRoute('POST', '/delete', [ProductsController::class, 'delete']);
     $r->addRoute('GET', '/add', [AddProductController::class, 'index']);
     $r->addRoute('POST', '/add', [AddProductController::class, 'execute']);
 });
@@ -68,7 +67,7 @@ switch ($routeInfo[0]) {
         if ($response instanceof Template) {
             echo $twig->render($response->getPath(), $response->getParams());
 
-            unset($_SESSION['errors']);
+            unset($_SESSION['error']);
         }
 
         if ($response instanceof Redirect) {

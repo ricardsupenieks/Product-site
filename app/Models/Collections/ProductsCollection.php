@@ -1,10 +1,10 @@
 <?php
 
-namespace Aapp\Models\Collections;
+namespace App\Models\Collections;
 
 use App\Models\Product;
 
-class ProductCollection
+class ProductsCollection
 {
     private array $products = [];
 
@@ -20,7 +20,7 @@ class ProductCollection
         $this->products[] = $product;
     }
 
-    public function getStocks(): array
+    public function get(): array
     {
         return $this->products;
     }

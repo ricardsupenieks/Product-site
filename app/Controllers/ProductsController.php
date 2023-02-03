@@ -6,7 +6,7 @@ use App\Redirect;
 use App\Services\ProductsService;
 use App\Template;
 
-class ProductController
+class ProductsController
 {
 
     public function __construct()
@@ -16,13 +16,15 @@ class ProductController
 
     public function index()
     {
-       return new Template('productList.twig');
+        $products = $this->productService->getProducts();
+
+        return new Template('productList.twig', ['products' => $products->get()]);
     }
 
     public function delete()
     {
         foreach($_POST as $id) {
-            $this->productService->deleteProduct($id);
+            $this->productService->deleteProduct((int)$id);
         }
 
         return new Redirect('/');

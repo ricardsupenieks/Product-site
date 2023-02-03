@@ -6,12 +6,14 @@ use App\Models\Product;
 use App\Redirect;
 use App\Services\ProductsService;
 use App\Template;
+use App\Validation\ProductValidation;
 
 class AddProductController
 {
     public function __construct()
     {
         $this->productService = new ProductsService();
+        $this->validation = new ProductValidation();
     }
 
     public function index()
@@ -21,9 +23,12 @@ class AddProductController
 
     public function execute()
     {
-        var_dump($_POST);die;
+        if($this->validation->skuTaken($_POST['sku'])) {
+            $_SESSION['error']['skuTaken'] = true;
 
-        $newProduct = new Product(
+            return new Redirect('/add');
+        }
+        $product = new Product(
             $_POST['productType'],
             $_POST['sku'],
             $_POST['name'],
@@ -31,9 +36,7 @@ class AddProductController
             $_POST['attribute']
         );
 
-        var_dump($newProduct);die;
-
-        $this->productService->storeProduct();
+        $this->productService->storeProduct($product);
         return new Redirect('/');
     }
 }

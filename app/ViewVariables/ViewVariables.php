@@ -2,7 +2,8 @@
 
 namespace App\ViewVariables;
 
-interface VIewVariables {
+interface ViewVariables
+{
     public function getName(): string;
     public function getValue(): array;
 }

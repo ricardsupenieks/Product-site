@@ -19,7 +19,6 @@ class Product
         $this->attribute = $attribute;
     }
 
-
     public function getType(): string
     {
         return $this->type;

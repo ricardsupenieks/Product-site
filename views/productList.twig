@@ -19,20 +19,24 @@
             </div>
         </div>
 
-        <div class="flex flex-row mx-20 my-10 justify-between">
+        <div class="flex flex-row mx-20 my-10 gap-12 align-center">
             {% for product in products %}
-                <div class="border-2 border-black px-2 flex flex-col">
+                <div class="border-2 border-black px-2 flex flex-col min-w-[250px]">
                     <div class="flex flex-row mt-2 align-start">
                         <input type="checkbox" class="delete-checkbox" name="{{ product.name }}" value="{{ product.id }}">
                     </div>
-
-                    <div class="flex flex-col items-center">
-                        <p>{{ product.id }}</p>
+                    <div class="flex flex-col items-center mb-6">
                         <p>{{ product.type }}</p>
                         <p>{{ product.sku }}</p>
-                        <p>{{ product.price }}</p>
+                        <p>{{ product.price / 100 }}$</p>
                         <p>{{ product.name }}</p>
-                        <p>{{ product.attribute }}</p>
+                        {% if product.type is same as "DVD" %}
+                            <p>{{ product.attribute }}MB</p>
+                        {% elseif product.type is same as "Furniture" %}
+                            <p>{{ product.attribute }}</p>
+                        {% else %}
+                            <p>{{ product.attribute }}KG</p>
+                        {% endif %}
                     </div>
                 </div>
             {% endfor %}
