@@ -8,7 +8,7 @@
             </div>
 
             <div class="flex flex-row gap-2 mb-2">
-                <button :disabled="!formIsValid"
+                <button
                         :class="{
                             'border-2 border-black px-1 shadow-md shadow-black hover:-translate-y-1 hover:scale-105 transition ease-in-out delay-90' : formIsValid,
                             'border-2 border-black px-1 shadow-md shadow-black bg-gray-200 opacity-50' : !formIsValid,
@@ -27,22 +27,22 @@
             <div class="flex flex-col gap-3 w-1/5">
                 <div class="flex flex-row justify-between">
                     <label for="sku">SKU</label>
-                    <input v-model="form.sku" type="text" name="sku" id="sku" class="border-2 border-black"/>
+                    <input v-model="baseForm.sku" type="text" name="sku" id="sku" class="border-2 border-black"/>
                 </div>
                 <div class="flex flex-row justify-between">
                     <label for="name">Name</label>
-                    <input v-model="form.name" type="text" name="name" id="name" class="border-2 border-black mr-0"/>
+                    <input v-model="baseForm.name" type="text" name="name" id="name" class="border-2 border-black mr-0"/>
                 </div>
                 <div class="flex flex-row justify-between">
                     <label for="price">Price ($)</label>
-                    <input v-model="form.price" type="number" name="price" id="price" class="border-2 border-black mr-0"/>
+                    <input v-model="baseForm.price" type="number" name="price" id="price" class="border-2 border-black mr-0"/>
                 </div>
             </div>
 
 
             <div>
                 <label for="productType">Type Switcher </label>
-                <select v-model="form.type" name="productType" id="productType" class="border-2 border-black bg-white">
+                <select v-model="type" name="productType" id="productType" class="border-2 border-black bg-white">
                     <option value="DVD">DVD</option>
                     <option value="Furniture">Furniture</option>
                     <option value="Book">Book</option>
@@ -50,49 +50,49 @@
             </div>
 
 
-            <div v-if="form.type === 'DVD'" class="border-2 border-black p-4 w-1/4">
+            <div v-if="type === 'DVD'" class="border-2 border-black p-4 w-1/4">
                 <div class="flex flex-col gap-3 w-full">
                     <p>Please, provide size:</p>
                     <div class="flex flex-row justify-between">
                         <label for="size">Size (MB)</label>
-                        <input v-model.number="form.size" type="number" name="attribute" id="size" class="border-2 border-black mr-0"/>
+                        <input v-model.number="size" type="number" name="attribute" id="size" class="border-2 border-black mr-0"/>
                     </div>
                 </div>
             </div>
 
-            <div v-if="form.type === 'Furniture'" class="border-2 border-black p-4 w-1/4">
+            <div v-if="type === 'Furniture'" class="border-2 border-black p-4 w-1/4">
                 <div class="flex flex-col gap-3 w-full">
                     <p>Please, provide dimensions:</p>
                     <div class="flex flex-row justify-between">
                         <label for="height">Height (CM)</label>
-                        <input v-model.number="form.height" type="number" id="height" class="border-2 border-black mr-0"/>
+                        <input v-model.number="furnitureForm.height" type="number" id="height" class="border-2 border-black mr-0"/>
                     </div>
                     <div class="flex flex-row justify-between">
                         <label for="width">Width (CM)</label>
-                        <input v-model.number="form.width" type="number" id="width" class="border-2 border-black mr-0"/>
+                        <input v-model.number="furnitureForm.width" type="number" id="width" class="border-2 border-black mr-0"/>
                     </div>
                     <div class="flex flex-row justify-between">
                         <label for="length">Length (CM)</label>
-                        <input v-model.number="form.length" type="number" id="length" class="border-2 border-black mr-0"/>
+                        <input v-model.number="furnitureForm.length" type="number" id="length" class="border-2 border-black mr-0"/>
                     </div>
                     <input type="hidden" name="attribute" :value="dimensions = height +'x'+ width +'x'+ length">
                 </div>
             </div>
 
-            <div v-if="form.type === 'Book'" class="border-2 border-black p-4 w-1/4">
+            <div v-if="type === 'Book'" class="border-2 border-black p-4 w-1/4">
                 <div class="flex flex-col gap-3 w-full">
                     <p>Please, provide weight:</p>
                     <div class="flex flex-row justify-between">
                         <label for="weight">Weight (KG)</label>
-                        <input v-model.number="form.weight" type="number" name="attribute" id="weight" class="border-2 border-black mr-0"/>
+                        <input v-model.number="weight" type="number" name="attribute" id="weight" class="border-2 border-black mr-0"/>
                     </div>
                 </div>
             </div>
-            [[ form.weight ]]  [[ form.size ]]
+
+            [[ requiredError ]] [[ typeError ]]
             <div>
-                <p v-if="!skuIsValid">Enter SKU</p>
-                <p v-if="!nameIsValid">Enter name</p>
-                <p v-if="!priceIsValid">Enter price</p>
+                <p>Please, submit required data</p>
+                <p>Please, provide the data of indicated type</p>
                 {% if error.skuTaken %}
                     <div role="alert">
                         <p>SKU taken</p>
@@ -104,57 +104,80 @@
 
     <script type="module">
         import { createApp } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js';
+
         createApp({
             data() {
                 return {
-                    form: {
+                    baseForm: {
                         sku: '',
                         name: '',
-                        price: 0,
+                        price: '',
+                    },
 
-                        type: 'DVD',
+                    type: 'DVD',
 
+                    furnitureForm: {
                         height: '',
                         width: '',
                         length: '',
-
-                        size: '',
-                        dimensions: '0x0x0',
-                        weight: '',
                     },
+
+                    dimensions: '0x0x0',
+
+                    size: '',
+                    weight: '',
+
+                    requiredError: [],
+                    typeError: [],
                 }
             },
+            methods: {
+                validateForm() {
+                    this.requiredError = [];
+                    this.typeError = [];
 
-            computed: {
-                skuIsValid() {
-                    return !!this.form.sku;
-                },
-                nameIsValid() {
-                    return !!this.form.name;
-                },
-                priceIsValid() {
-                    return typeof this.form.price === 'number' && this.form.price >= 0.01;
-                },
+                    for (const item in this.baseForm) {
+                        if(this.baseForm[item] === "") {
+                            this.requiredError.push(item);
+                        }
+                        if (item === 'sku' || item === 'name') {
+                            if(typeof this.baseForm[item] !== "string") {
+                                this.typeError.push(item);
+                            }
+                        } else {
+                            if (typeof this.baseForm[item] !== "number") {
+                                this.typeError.push(item);
+                            }
+                        }
+                    }
 
-                sizeIsValid() {
-                    return typeof this.form.size === 'number' && this.form.size > 0;
-                },
+                    if(this.type === "DVD") {
+                        if(this.size === "" || !this.size > 0) {
+                            this.requiredError.push(this.size);
+                        }
+                        if (typeof this.size !== "number") {
+                            this.typeError.push(this.size);
+                        }
+                    }
 
-                weightIsValid() {
-                    return typeof this.form.weight === 'number' && this.form.weight > 0;
-                },
+                    if(this.type === "Book") {
+                        if(this.weight === "" || !this.weight > 0) {
+                            this.requiredError.push(this.weight);
+                        }
+                        if (typeof this.weight !== "number") {
+                            this.typeError.push(this.weight);
+                        }
+                    }
 
-                firstFormIsValid() {
-                    return this.skuIsValid && this.nameIsValid && this.priceIsValid;
-                }
-            },
-
-            methods : {
-                submitForm() {
-                    if (this.firstFormIsValid()) {
-                        console.log('success');
-                    } else {
-                        console.log('fail');
+                    if(this.type === "Furniture") {
+                        for (const item in this.furnitureForm) {
+                            if(this.furnitureForm[item] === "") {
+                                this.requiredError.push(item);
+                            }
+                            if(typeof this.furnitureForm[item] !== "number") {
+                                    this.typeError.push(item);
+                            }
+                        }
                     }
                 }
             },
