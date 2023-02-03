@@ -1,19 +1,15 @@
 {% extends 'layout.twig' %}
 
 {% block content %}
-    <form id="product_form" action="/add" method="post">
+    <form id="product_form" onsubmit="return validateForm();" action="/add" method="post">
         <div class="flex flex-row border-b-2 border-black justify-between mx-4 mt-10">
             <div class="text-3xl">
                 Product Add
             </div>
 
             <div class="flex flex-row gap-2 mb-2">
-                <button
-                        :class="{
-                            'border-2 border-black px-1 shadow-md shadow-black hover:-translate-y-1 hover:scale-105 transition ease-in-out delay-90' : formIsValid,
-                            'border-2 border-black px-1 shadow-md shadow-black bg-gray-200 opacity-50' : !formIsValid,
-
-                        }">
+                <button @click="validateForm()"
+                        class='border-2 border-black px-1 shadow-md shadow-black hover:-translate-y-1 hover:scale-105 transition ease-in-out delay-90'>
                     Save
                 </button>
                 <a href="/" class="border-2 border-black px-1 shadow-md shadow-black hover:-translate-y-1 hover:scale-105 transition ease-in-out delay-90">
@@ -26,15 +22,15 @@
         <div class="flex flex-col gap-20 mx-10 my-20">
             <div class="flex flex-col gap-3 w-1/5">
                 <div class="flex flex-row justify-between">
-                    <label for="sku">SKU</label>
+                    <label for="sku">SKU*</label>
                     <input v-model="baseForm.sku" type="text" name="sku" id="sku" class="border-2 border-black"/>
                 </div>
                 <div class="flex flex-row justify-between">
-                    <label for="name">Name</label>
+                    <label for="name">Name*</label>
                     <input v-model="baseForm.name" type="text" name="name" id="name" class="border-2 border-black mr-0"/>
                 </div>
                 <div class="flex flex-row justify-between">
-                    <label for="price">Price ($)</label>
+                    <label for="price">Price ($)*</label>
                     <input v-model="baseForm.price" type="number" name="price" id="price" class="border-2 border-black mr-0"/>
                 </div>
             </div>
@@ -54,7 +50,7 @@
                 <div class="flex flex-col gap-3 w-full">
                     <p>Please, provide size:</p>
                     <div class="flex flex-row justify-between">
-                        <label for="size">Size (MB)</label>
+                        <label for="size">Size (MB)*</label>
                         <input v-model.number="size" type="number" name="attribute" id="size" class="border-2 border-black mr-0"/>
                     </div>
                 </div>
@@ -64,15 +60,15 @@
                 <div class="flex flex-col gap-3 w-full">
                     <p>Please, provide dimensions:</p>
                     <div class="flex flex-row justify-between">
-                        <label for="height">Height (CM)</label>
+                        <label for="height">Height (CM)*</label>
                         <input v-model.number="furnitureForm.height" type="number" id="height" class="border-2 border-black mr-0"/>
                     </div>
                     <div class="flex flex-row justify-between">
-                        <label for="width">Width (CM)</label>
+                        <label for="width">Width (CM)*</label>
                         <input v-model.number="furnitureForm.width" type="number" id="width" class="border-2 border-black mr-0"/>
                     </div>
                     <div class="flex flex-row justify-between">
-                        <label for="length">Length (CM)</label>
+                        <label for="length">Length (CM)*</label>
                         <input v-model.number="furnitureForm.length" type="number" id="length" class="border-2 border-black mr-0"/>
                     </div>
                     <input type="hidden" name="attribute" :value="dimensions = height +'x'+ width +'x'+ length">
@@ -83,16 +79,16 @@
                 <div class="flex flex-col gap-3 w-full">
                     <p>Please, provide weight:</p>
                     <div class="flex flex-row justify-between">
-                        <label for="weight">Weight (KG)</label>
+                        <label for="weight">Weight (KG)*</label>
                         <input v-model.number="weight" type="number" name="attribute" id="weight" class="border-2 border-black mr-0"/>
                     </div>
                 </div>
             </div>
-
-            [[ requiredError ]] [[ typeError ]]
+            [[requiredError]] [[typeError]]
+            * - required fields
             <div>
-                <p>Please, submit required data</p>
-                <p>Please, provide the data of indicated type</p>
+                <p v-if="requiredError.length > 0">Please, submit required data</p>
+                <p v-if="typeError.length > 0">Please, provide the data of indicated type</p>
                 {% if error.skuTaken %}
                     <div role="alert">
                         <p>SKU taken</p>
@@ -133,6 +129,7 @@
             },
             methods: {
                 validateForm() {
+
                     this.requiredError = [];
                     this.typeError = [];
 
@@ -153,19 +150,19 @@
 
                     if(this.type === "DVD") {
                         if(this.size === "" || !this.size > 0) {
-                            this.requiredError.push(this.size);
+                            this.requiredError.push("size");
                         }
                         if (typeof this.size !== "number") {
-                            this.typeError.push(this.size);
+                            this.typeError.push("size");
                         }
                     }
 
                     if(this.type === "Book") {
                         if(this.weight === "" || !this.weight > 0) {
-                            this.requiredError.push(this.weight);
+                            this.requiredError.push("weight");
                         }
                         if (typeof this.weight !== "number") {
-                            this.typeError.push(this.weight);
+                            this.typeError.push("weight");
                         }
                     }
 
@@ -179,7 +176,12 @@
                             }
                         }
                     }
-                }
+
+                    if(this.requiredError.length > 0 || this.typeError.length > 0 ) {
+                        return false
+                    }
+                    return true
+                },
             },
             delimiters: ['[[', ']]']
         }).mount('#app');
