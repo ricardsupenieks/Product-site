@@ -2,14 +2,17 @@
 
 {% block content %}
     <form id="product_form" onsubmit="return validateForm();" action="/add" method="post">
-        <div class="flex flex-row border-b-2 border-black justify-between mx-4 mt-10">
+        <div class="flex flex-row border-b-2 border-black justify-between mx-8 mt-10">
             <div class="text-3xl">
                 Product Add
             </div>
 
             <div class="flex flex-row gap-2 mb-2">
-                <button @click="validateForm()"
-                        class='border-2 border-black px-1 shadow-md shadow-black hover:-translate-y-1 hover:scale-105 transition ease-in-out delay-90'>
+                <button :disabled="!validateForm()"
+                        :class="{
+                        'border-2 border-black px-1 shadow-md shadow-black hover:-translate-y-1 hover:scale-105 transition ease-in-out delay-90' : validateForm(),
+                        'border-2 border-black px-1 shadow-md shadow-black opacity-50' : !validateForm()
+                        }">
                     Save
                 </button>
                 <a href="/" class="border-2 border-black px-1 shadow-md shadow-black hover:-translate-y-1 hover:scale-105 transition ease-in-out delay-90">
@@ -34,7 +37,6 @@
                     <input v-model="baseForm.price" type="number" name="price" id="price" class="border-2 border-black mr-0"/>
                 </div>
             </div>
-
 
             <div>
                 <label for="productType">Type Switcher </label>
@@ -71,7 +73,7 @@
                         <label for="length">Length (CM)*</label>
                         <input v-model.number="furnitureForm.length" type="number" id="length" class="border-2 border-black mr-0"/>
                     </div>
-                    <input type="hidden" name="attribute" :value="dimensions = height +'x'+ width +'x'+ length">
+                    <input type="hidden" name="attribute" :value="dimensions = furnitureForm.height +'x'+ furnitureForm.width +'x'+ furnitureForm.length">
                 </div>
             </div>
 
@@ -84,16 +86,13 @@
                     </div>
                 </div>
             </div>
-            [[requiredError]] [[typeError]]
             * - required fields
             <div>
-                <p v-if="requiredError.length > 0">Please, submit required data</p>
-                <p v-if="typeError.length > 0">Please, provide the data of indicated type</p>
                 {% if error.skuTaken %}
-                    <div role="alert">
-                        <p>SKU taken</p>
-                    </div>
+                    <p class="text-red-400">SKU taken</p>
                 {% endif %}
+                <p class="text-red-400" v-if="requiredError.length > 0">Please, submit required data</p>
+                <p class="text-red-400" v-if="typeError.length > 0">Please, provide the data of indicated type</p>
             </div>
         </div>
     </form>
@@ -142,8 +141,8 @@
                                 this.typeError.push(item);
                             }
                         } else {
-                            if (typeof this.baseForm[item] !== "number") {
-                                this.typeError.push(item);
+                            if (typeof this.baseForm[item] !== "number" || this.baseForm[item] < 0.01) {
+                                this.requiredError.push(item);
                             }
                         }
                     }
@@ -177,10 +176,8 @@
                         }
                     }
 
-                    if(this.requiredError.length > 0 || this.typeError.length > 0 ) {
-                        return false
-                    }
-                    return true
+                    return !(this.requiredError.length > 0 || this.typeError.length > 0);
+
                 },
             },
             delimiters: ['[[', ']]']
