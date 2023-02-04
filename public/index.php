@@ -2,7 +2,6 @@
 
 use App\Controllers\AddProductController;
 use App\Controllers\ProductsController;
-use App\Controllers\SiteController;
 use App\Redirect;
 use App\Template;
 use App\ViewVariables\ErrorViewVariables;
@@ -12,7 +11,7 @@ use Twig\Loader\FilesystemLoader;
 
 require '../vendor/autoload.php';
 
-const PATH_TO_DOTENV = '/home/ricards/PhpstormProjects/Product_site/';
+const PATH_TO_DOTENV = '';
 
 session_start();
 
@@ -33,8 +32,7 @@ foreach ($viewVariables as $variable) {
 }
 
 $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
-    $r->addRoute('GET', '/', [SiteController::class, 'index']);
-    $r->addRoute('GET', '/products', [ProductsController::class, 'index']);
+    $r->addRoute('GET', '/', [ProductsController::class, 'index']);
     $r->addRoute('POST', '/delete', [ProductsController::class, 'delete']);
     $r->addRoute('GET', '/add', [AddProductController::class, 'index']);
     $r->addRoute('POST', '/add', [AddProductController::class, 'execute']);
