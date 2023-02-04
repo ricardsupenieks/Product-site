@@ -23,4 +23,4 @@
 3. Rename ".env.example" to ".env" and enter the correct information in the parenthesis
 4. In public/index.php change PATH_TO_DOTENV to the path of the root folder of the .env file.
 5. Import the "schema.sql"
-6. You can run the development website by running <code>php -S localhost:8000</code>
+6. You can run the development server by running <code>php -S localhost:8000</code>
