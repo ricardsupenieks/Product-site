@@ -11,7 +11,7 @@ use Twig\Loader\FilesystemLoader;
 
 require '../vendor/autoload.php';
 
-const PATH_TO_DOTENV = '/home/ricards/PhpstormProjects/Product_site/';
+const PATH_TO_DOTENV = '';
 
 session_start();
 
